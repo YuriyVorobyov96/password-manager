@@ -3,8 +3,6 @@ package files
 import (
 	"fmt"
 	"os"
-
-	"github.com/fatih/color"
 )
 
 func ReadFile(name string) ([]byte, error) {
@@ -29,6 +27,4 @@ func WriteFile(content []byte, name string) {
 
 		return
 	}
-
-	color.Green("Success write to file")
 }

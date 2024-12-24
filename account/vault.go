@@ -60,11 +60,14 @@ func (vault *Vault) AddAccount(acc Account) {
 	}
 
 	files.WriteFile(data, dataFileName)
+	color.Green("Successfully add account")
 }
 
 func (vault *Vault) FindByUrl(searchString string) {
 	if len(vault.Accounts) == 0 {
 		color.Yellow("Can't find accounts")
+
+		return
 	}
 
 	for _, value := range vault.Accounts {
@@ -72,4 +75,38 @@ func (vault *Vault) FindByUrl(searchString string) {
 			color.Green("{ Login: %s, Password: %s, URL: %s }\n", value.Login, value.Password, value.Url)
 		}
 	}
+}
+
+func (vault *Vault) RemoveByUrl(url string) {
+	if len(vault.Accounts) == 0 {
+		color.Yellow("Nothing to delete")
+
+		return
+	}
+
+	accounts := []Account{}
+
+	for _, value := range vault.Accounts {
+		if value.Url != url {
+			accounts = append(accounts, value)
+		}
+	}
+
+	if len(accounts) < len(vault.Accounts) {
+		vault.Accounts = accounts
+
+		data, err := vault.ToBytes()
+
+		if err != nil {
+			color.Red("Can't write data")
+		}
+
+		files.WriteFile(data, dataFileName)
+
+		color.Green("Successfully delete accounts")
+
+		return
+	}
+
+	color.Yellow("Nothing to delete")
 }

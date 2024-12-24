@@ -88,5 +88,7 @@ func findByUrl(vault *account.Vault) {
 }
 
 func removeAccount(vault *account.Vault) {
+	url := promptData("Enter URL to remove: ")
 
+	vault.RemoveByUrl(url)
 }
