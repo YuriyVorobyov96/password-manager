@@ -17,10 +17,6 @@ type Vault struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-func (vault *Vault) ToBytes() ([]byte, error) {
-	return json.Marshal(vault)
-}
-
 func NewVault() *Vault {
 	data, err := files.ReadFile(dataFileName)
 
@@ -95,10 +91,14 @@ func (vault *Vault) RemoveByUrl(url string) {
 	color.Yellow("Nothing to delete")
 }
 
+func (vault *Vault) toBytes() ([]byte, error) {
+	return json.Marshal(vault)
+}
+
 func (vault *Vault) save() {
 	vault.UpdatedAt = time.Now()
 
-	data, err := vault.ToBytes()
+	data, err := vault.toBytes()
 
 	if err != nil {
 		color.Red("Can't write data")
