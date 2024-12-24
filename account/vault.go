@@ -51,15 +51,7 @@ func NewVault() *Vault {
 
 func (vault *Vault) AddAccount(acc Account) {
 	vault.Accounts = append(vault.Accounts, acc)
-	vault.UpdatedAt = time.Now()
-
-	data, err := vault.ToBytes()
-
-	if err != nil {
-		color.Red("Can't write data")
-	}
-
-	files.WriteFile(data, dataFileName)
+	vault.save()
 	color.Green("Successfully add account")
 }
 
@@ -94,19 +86,23 @@ func (vault *Vault) RemoveByUrl(url string) {
 
 	if len(accounts) < len(vault.Accounts) {
 		vault.Accounts = accounts
-
-		data, err := vault.ToBytes()
-
-		if err != nil {
-			color.Red("Can't write data")
-		}
-
-		files.WriteFile(data, dataFileName)
-
+		vault.save()
 		color.Green("Successfully delete accounts")
 
 		return
 	}
 
 	color.Yellow("Nothing to delete")
+}
+
+func (vault *Vault) save() {
+	vault.UpdatedAt = time.Now()
+
+	data, err := vault.ToBytes()
+
+	if err != nil {
+		color.Red("Can't write data")
+	}
+
+	files.WriteFile(data, dataFileName)
 }
