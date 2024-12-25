@@ -2,13 +2,12 @@ package controller
 
 import (
 	"fmt"
-
-	"github.com/fatih/color"
+	"password/manager/output"
 )
 
 func HandleRegisterMenu() int8 {
-	color.Cyan("1. Set up master password")
-	color.Cyan("2. Exit")
+	output.PrintAction("1. Set up master password")
+	output.PrintAction("2. Exit")
 
 	var res int8
 
@@ -24,9 +23,9 @@ func HandleRegisterMenu() int8 {
 }
 
 func HandleLoginMenu() int8 {
-	color.Cyan("1. Login with master password")
-	color.Cyan("2. Restart Vault")
-	color.Cyan("3. Exit")
+	output.PrintAction("1. Login with master password")
+	output.PrintAction("2. Restart Vault")
+	output.PrintAction("3. Exit")
 
 	var res int8
 
@@ -42,10 +41,10 @@ func HandleLoginMenu() int8 {
 }
 
 func HandleVaultMenu() int8 {
-	color.Cyan("1. Add account")
-	color.Cyan("2. Find account")
-	color.Cyan("3. Remove account")
-	color.Cyan("4. Exit")
+	output.PrintAction("1. Add account")
+	output.PrintAction("2. Find account")
+	output.PrintAction("3. Remove account")
+	output.PrintAction("4. Exit")
 
 	var res int8
 

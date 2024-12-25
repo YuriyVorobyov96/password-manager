@@ -8,8 +8,6 @@ import (
 	"password/manager/cipher"
 	"password/manager/output"
 	"time"
-
-	"github.com/fatih/color"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#^")
@@ -20,10 +18,6 @@ type Account struct {
 	Url       string    `json:"url"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
-}
-
-func (acc *Account) OutputData() {
-	color.Cyan(acc.Login, acc.Password, acc.Url, "\n")
 }
 
 func NewAccount(login, password, urlString, masterPassword string) (*Account, error) {
