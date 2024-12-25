@@ -6,7 +6,7 @@ import (
 	"github.com/fatih/color"
 )
 
-func HandleVaultAction(vault *account.Vault, action int8, masterPassword string, isRunning *bool) {
+func HandleVaultAction(vault *account.VaultWithDb, action int8, masterPassword string, isRunning *bool) {
 	switch {
 	case action == 1:
 		createAccount(vault, masterPassword)
@@ -19,7 +19,7 @@ func HandleVaultAction(vault *account.Vault, action int8, masterPassword string,
 	}
 }
 
-func createAccount(vault *account.Vault, masterPassword string) {
+func createAccount(vault *account.VaultWithDb, masterPassword string) {
 	login := PromptData("Enter login: ")
 	password := PromptData("Enter password (or press 'Enter' for generation): ")
 	url := PromptData("Enter URL: ")
@@ -47,13 +47,13 @@ func createAccount(vault *account.Vault, masterPassword string) {
 	vault.AddAccount(*acc)
 }
 
-func findByUrl(vault *account.Vault, masterPassword string) {
+func findByUrl(vault *account.VaultWithDb, masterPassword string) {
 	searchString := PromptData("Enter URL to search: ")
 
 	vault.FindByUrl(searchString, masterPassword)
 }
 
-func removeAccount(vault *account.Vault) {
+func removeAccount(vault *account.VaultWithDb) {
 	url := PromptData("Enter URL to remove: ")
 
 	vault.RemoveByUrl(url)

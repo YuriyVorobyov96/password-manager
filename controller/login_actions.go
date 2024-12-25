@@ -7,7 +7,7 @@ import (
 	"github.com/fatih/color"
 )
 
-func HandleLoginAction(vault *account.Vault, action int8, masterPassword *string, isLogin *bool, isRunning *bool) {
+func HandleLoginAction(vault *account.VaultWithDb, action int8, masterPassword *string, isLogin *bool, isRunning *bool) {
 	switch {
 	case action == 1:
 		login(isLogin, masterPassword)
@@ -35,7 +35,7 @@ func login(isLogin *bool, masterPassword *string) {
 	color.Red("Incorrect password")
 }
 
-func restartVault(vault *account.Vault) {
+func restartVault(vault *account.VaultWithDb) {
 	isRestart := PromptData("Are you sure? This will delete all your data (Y/N): ")
 
 	if isRestart == "y" || isRestart == "Y" {

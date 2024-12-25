@@ -10,7 +10,7 @@ import (
 	"github.com/fatih/color"
 )
 
-const vaultFileName = "data.json"
+const VaultFileName = "data.json"
 
 type Vault struct {
 	Accounts  []Account `json:"accounts"`
@@ -23,16 +23,17 @@ type VaultWithDb struct {
 	db files.JsonDb
 }
 
-func NewVault() *Vault {
-	db := files.NewJsonDb(vaultFileName)
-
+func NewVault(db *files.JsonDb) *VaultWithDb {
 	data, err := db.ReadFile()
 
 	if err != nil {
-		return &Vault{
-			Accounts:  []Account{},
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+		return &VaultWithDb{
+			Vault: Vault{
+				Accounts:  []Account{},
+				CreatedAt: time.Now(),
+				UpdatedAt: time.Now(),
+			},
+			db: *db,
 		}
 	}
 
@@ -43,23 +44,29 @@ func NewVault() *Vault {
 	if err != nil {
 		color.Red("Can't read data")
 
-		return &Vault{
-			Accounts:  []Account{},
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+		return &VaultWithDb{
+			Vault: Vault{
+				Accounts:  []Account{},
+				CreatedAt: time.Now(),
+				UpdatedAt: time.Now(),
+			},
+			db: *db,
 		}
 	}
 
-	return &vault
+	return &VaultWithDb{
+		Vault: vault,
+		db: *db,
+	}
 }
 
-func (vault *Vault) AddAccount(acc Account) {
+func (vault *VaultWithDb) AddAccount(acc Account) {
 	vault.Accounts = append(vault.Accounts, acc)
 	vault.save()
 	color.Green("Successfully add account")
 }
 
-func (vault *Vault) FindByUrl(searchString, masterPassword string) {
+func (vault *VaultWithDb) FindByUrl(searchString, masterPassword string) {
 	if len(vault.Accounts) == 0 {
 		color.Yellow("Can't find accounts")
 
@@ -80,7 +87,7 @@ func (vault *Vault) FindByUrl(searchString, masterPassword string) {
 	}
 }
 
-func (vault *Vault) RemoveByUrl(url string) {
+func (vault *VaultWithDb) RemoveByUrl(url string) {
 	if len(vault.Accounts) == 0 {
 		color.Yellow("Nothing to delete")
 
@@ -106,15 +113,15 @@ func (vault *Vault) RemoveByUrl(url string) {
 	color.Yellow("Nothing to delete")
 }
 
-func (vault *Vault) Restart() {
-	db := files.NewJsonDb(vaultFileName)
-	db.RemoveFile()
+func (vault *VaultWithDb) Restart() {
+	vault.db.RemoveFile()
 
-	newVault := NewVault()
+	newVault := NewVault(&vault.db)
 
 	vault.Accounts = newVault.Accounts
 	vault.CreatedAt = newVault.CreatedAt
 	vault.UpdatedAt = newVault.UpdatedAt
+	vault.db = newVault.db
 
 	vault.save()
 }
@@ -123,15 +130,14 @@ func (vault *Vault) toBytes() ([]byte, error) {
 	return json.Marshal(vault)
 }
 
-func (vault *Vault) save() {
+func (vault *VaultWithDb) save() {
 	vault.UpdatedAt = time.Now()
 
-	data, err := vault.toBytes()
+	data, err := vault.Vault.toBytes()
 
 	if err != nil {
 		color.Red("Can't write data")
 	}
 
-	db := files.NewJsonDb(vaultFileName)
-	db.WriteFile(data)
+	vault.db.WriteFile(data)
 }

@@ -1,6 +1,7 @@
 package files
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/fatih/color"
@@ -11,6 +12,7 @@ func readFile(filename string) ([]byte, error) {
 }
 
 func writeFile(content []byte, filename string) {
+	fmt.Println(filename)
 	file, err := os.Create(filename)
 
 	if err != nil {
