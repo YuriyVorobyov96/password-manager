@@ -3,6 +3,7 @@ package account
 import (
 	"encoding/json"
 	"password/manager/cipher"
+	"password/manager/output"
 	"strings"
 	"time"
 
@@ -47,7 +48,7 @@ func NewVault(db Db) *VaultWithDb {
 	err = json.Unmarshal(data, &vault)
 
 	if err != nil {
-		color.Red("Can't read data")
+		output.PrintError("Can't read data")
 
 		return &VaultWithDb{
 			Vault: Vault{
@@ -83,7 +84,7 @@ func (vault *VaultWithDb) FindByUrl(searchString, masterPassword string) {
 			decryptedPassword, err := cipher.Decrypt(value.Password, masterPassword)
 
 			if err != nil {
-				color.Red("Can't decrypt password")
+				output.PrintError("Can't decrypt password")
 				panic(err)
 			}
 
@@ -141,7 +142,7 @@ func (vault *VaultWithDb) save() {
 	data, err := vault.Vault.toBytes()
 
 	if err != nil {
-		color.Red("Can't write data")
+		output.PrintError("Can't write data")
 	}
 
 	vault.db.Write(data)

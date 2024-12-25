@@ -2,6 +2,7 @@ package cipher
 
 import (
 	"password/manager/files"
+	"password/manager/output"
 
 	"github.com/fatih/color"
 )
@@ -16,7 +17,7 @@ func IsMasterPasswordExist(db *files.MpVault) bool {
 
 func CreateMasterPassword(db *files.MpVault, password string) {
 	if len(password) < 10 {
-		color.Red("The length of the password must be greater than or equal to 10 characters")
+		output.PrintError("The length of the password must be greater than or equal to 10 characters")
 
 		return
 	}
@@ -24,7 +25,7 @@ func CreateMasterPassword(db *files.MpVault, password string) {
 	hashedPassword, err := Hash(password)
 
 	if err != nil {
-		color.Red("Can't store master password")
+		output.PrintError("Can't store master password")
 	}
 
 	db.Write([]byte(hashedPassword))
@@ -35,7 +36,7 @@ func CheckMasterPassword(db *files.MpVault, password string) bool {
 	hash, err := db.Read()
 
 	if err != nil {
-		color.Red("Master password data is broken. Please restart Vault")
+		output.PrintError("Master password data is broken. Please restart Vault")
 	}
 
 	return CheckHash(password, string(hash))

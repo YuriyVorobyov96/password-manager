@@ -2,8 +2,7 @@ package files
 
 import (
 	"os"
-
-	"github.com/fatih/color"
+	"password/manager/output"
 )
 
 func readFile(filename string) ([]byte, error) {
@@ -14,7 +13,7 @@ func writeFile(content []byte, filename string) {
 	file, err := os.Create(filename)
 
 	if err != nil {
-		color.Red(err.Error())
+		output.PrintError(err)
 
 		return
 	}
@@ -24,7 +23,7 @@ func writeFile(content []byte, filename string) {
 	defer file.Close()
 
 	if err != nil {
-		color.Red(err.Error())
+		output.PrintError(err)
 
 		return
 	}
@@ -34,6 +33,6 @@ func removeFile(filename string) {
 	err := os.Remove(filename)
 
 	if err != nil {
-		color.Red(err.Error())
+		output.PrintError(err)
 	}
 }

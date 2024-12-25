@@ -6,6 +6,7 @@ import (
 	"math/big"
 	"net/url"
 	"password/manager/cipher"
+	"password/manager/output"
 	"time"
 
 	"github.com/fatih/color"
@@ -77,7 +78,7 @@ func (acc *Account) generatePassword(n int, masterPassword string) {
 	encryptedPassword, err := cipher.Encrypt(string(password), masterPassword)
 
 	if err != nil {
-		color.Red("Error on password generation")
+		output.PrintError("Error on password generation")
 
 		return
 	}

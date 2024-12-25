@@ -2,8 +2,7 @@ package controller
 
 import (
 	"password/manager/account"
-
-	"github.com/fatih/color"
+	"password/manager/output"
 )
 
 func HandleVaultAction(vault *account.VaultWithDb, action int8, masterPassword string, isRunning *bool) {
@@ -28,17 +27,17 @@ func createAccount(vault *account.VaultWithDb, masterPassword string) {
 
 	if err != nil {
 		if err.Error() == "INVALID_LOGIN" {
-			color.Red("Invalid login format")
+			output.PrintError("Invalid login format")
 
 			return
 		}
 		if err.Error() == "INVALID_URL" {
-			color.Red("Invalid URL format")
+			output.PrintError("Invalid URL format")
 
 			return
 		}
 		if err.Error() == "INVALID_PASSWORD" {
-			color.Red("Invalid password format")
+			output.PrintError("Invalid password format")
 
 			return
 		}

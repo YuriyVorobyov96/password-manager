@@ -4,6 +4,7 @@ import (
 	"password/manager/account"
 	"password/manager/cipher"
 	"password/manager/files"
+	"password/manager/output"
 
 	"github.com/fatih/color"
 )
@@ -33,7 +34,7 @@ func login(db *files.MpVault, isLogin *bool, masterPassword *string) {
 		return
 	}
 
-	color.Red("Incorrect password")
+	output.PrintError("Incorrect password")
 }
 
 func restartVault(vault *account.VaultWithDb, db *files.MpVault) {

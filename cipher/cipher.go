@@ -5,8 +5,8 @@ import (
 	"crypto/cipher"
 	"crypto/sha1"
 	"encoding/base64"
+	"password/manager/output"
 
-	"github.com/fatih/color"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/pbkdf2"
 )
@@ -69,7 +69,7 @@ func decode(s string) []byte {
 	data, err := base64.StdEncoding.DecodeString(s)
 
 	if err != nil {
-		color.Red("Can't decode password")
+		output.PrintError("Can't decode password")
 		panic(err)
 	}
 
