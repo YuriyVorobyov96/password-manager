@@ -9,7 +9,7 @@ import (
 	"github.com/fatih/color"
 )
 
-const dataFileName = "data.json"
+const vaultFileName = "data.json"
 
 type Vault struct {
 	Accounts  []Account `json:"accounts"`
@@ -18,7 +18,7 @@ type Vault struct {
 }
 
 func NewVault() *Vault {
-	data, err := files.ReadFile(dataFileName)
+	data, err := files.ReadFile(vaultFileName)
 
 	if err != nil {
 		return &Vault{
@@ -91,6 +91,18 @@ func (vault *Vault) RemoveByUrl(url string) {
 	color.Yellow("Nothing to delete")
 }
 
+func (vault *Vault) Restart() {
+	files.RemoveFile(vaultFileName)
+
+	newVault := NewVault()
+
+	vault.Accounts = newVault.Accounts
+	vault.CreatedAt = newVault.CreatedAt
+	vault.UpdatedAt = newVault.UpdatedAt
+
+	vault.save()
+}
+
 func (vault *Vault) toBytes() ([]byte, error) {
 	return json.Marshal(vault)
 }
@@ -104,5 +116,5 @@ func (vault *Vault) save() {
 		color.Red("Can't write data")
 	}
 
-	files.WriteFile(data, dataFileName)
+	files.WriteFile(data, vaultFileName)
 }

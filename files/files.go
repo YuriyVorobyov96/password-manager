@@ -1,8 +1,9 @@
 package files
 
 import (
-	"fmt"
 	"os"
+
+	"github.com/fatih/color"
 )
 
 func ReadFile(name string) ([]byte, error) {
@@ -13,7 +14,7 @@ func WriteFile(content []byte, name string) {
 	file, err := os.Create(name)
 
 	if err != nil {
-		fmt.Println(err)
+		color.Red(err.Error())
 
 		return
 	}
@@ -23,8 +24,16 @@ func WriteFile(content []byte, name string) {
 	defer file.Close()
 
 	if err != nil {
-		fmt.Println(err)
+		color.Red(err.Error())
 
 		return
+	}
+}
+
+func RemoveFile(name string) {
+	err := os.Remove(name)
+
+	if err != nil {
+		color.Red(err.Error())
 	}
 }

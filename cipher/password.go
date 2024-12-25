@@ -11,7 +11,7 @@ const masterPasswordFileName = "mp.dat"
 func IsMasterPasswordExist() bool {
 	_, err := files.ReadFile(masterPasswordFileName)
 
-	return err != nil
+	return err == nil
 }
 
 func CreateMasterPassword(password string) {
@@ -36,15 +36,9 @@ func CheckMasterPassword(password string) bool {
 		color.Red("Master password data is broken. Please restart Vault")
 	}
 
-	isMatch := CheckHash(password, string(hash))
+	return CheckHash(password, string(hash))
+}
 
-	if isMatch {
-		color.Green("Correct password")
-
-		return isMatch
-	}
-
-	color.Red("Incorrect password")
-
-	return isMatch
+func ResetMasterPassword() {
+	files.RemoveFile(masterPasswordFileName)
 }
