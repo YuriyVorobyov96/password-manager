@@ -8,7 +8,7 @@ import (
 	"github.com/fatih/color"
 )
 
-func HandleLoginAction(vault *account.VaultWithDb, db *files.MpDb, action int8, masterPassword *string, isLogin *bool, isRunning *bool) {
+func HandleLoginAction(vault *account.VaultWithDb, db *files.MpVault, action int8, masterPassword *string, isLogin *bool, isRunning *bool) {
 	switch {
 	case action == 1:
 		login(db, isLogin, masterPassword)
@@ -19,7 +19,7 @@ func HandleLoginAction(vault *account.VaultWithDb, db *files.MpDb, action int8, 
 	}
 }
 
-func login(db *files.MpDb, isLogin *bool, masterPassword *string) {
+func login(db *files.MpVault, isLogin *bool, masterPassword *string) {
 	enteredMasterPassword := PromptData("Enter master password: ")
 
 	isMatch := cipher.CheckMasterPassword(db, enteredMasterPassword)
@@ -36,7 +36,7 @@ func login(db *files.MpDb, isLogin *bool, masterPassword *string) {
 	color.Red("Incorrect password")
 }
 
-func restartVault(vault *account.VaultWithDb, db *files.MpDb) {
+func restartVault(vault *account.VaultWithDb, db *files.MpVault) {
 	isRestart := PromptData("Are you sure? This will delete all your data (Y/N): ")
 
 	if isRestart == "y" || isRestart == "Y" {

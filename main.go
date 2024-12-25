@@ -11,11 +11,11 @@ func main() {
 	var masterPassword string
 	isRunning := true
 	isLogin := false
-	mpDb := files.NewMpDb(cipher.MasterPasswordFileName) 
+	mpVault := files.NewMpVault(cipher.MasterPasswordFileName)
 	vault := account.NewVault(files.NewJsonDb(account.VaultFileName))
 
 	for isRunning {
-		if cipher.IsMasterPasswordExist(mpDb) {
+		if cipher.IsMasterPasswordExist(mpVault) {
 			if isLogin {
 				action := controller.HandleVaultMenu()
 				controller.HandleVaultAction(vault, action, masterPassword, &isRunning)
@@ -23,11 +23,11 @@ func main() {
 			}
 
 			action := controller.HandleLoginMenu()
-			controller.HandleLoginAction(vault, mpDb, action, &masterPassword, &isLogin, &isRunning)
+			controller.HandleLoginAction(vault, mpVault, action, &masterPassword, &isLogin, &isRunning)
 			continue
 		}
 
 		action := controller.HandleRegisterMenu()
-		controller.HandleRegisterAction(mpDb, action, &isRunning)
+		controller.HandleRegisterAction(mpVault, action, &isRunning)
 	}
 }

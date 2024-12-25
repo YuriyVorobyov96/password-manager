@@ -10,14 +10,14 @@ func NewJsonDb(name string) *JsonDb {
 	}
 }
 
-func (db *JsonDb) ReadFile() ([]byte, error) {
+func (db *JsonDb) Read() ([]byte, error) {
 	return readFile(db.filename)
 }
 
-func (db *JsonDb) WriteFile(content []byte) {
+func (db *JsonDb) Write(content []byte) {
 	writeFile(content, db.filename)
 }
 
-func (db *JsonDb) RemoveFile() {
+func (db *JsonDb) Remove() {
 	removeFile(db.filename)
 }

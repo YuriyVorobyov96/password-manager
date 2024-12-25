@@ -8,13 +8,13 @@ import (
 
 const MasterPasswordFileName = "mp.dat"
 
-func IsMasterPasswordExist(db *files.MpDb) bool {
-	_, err := db.ReadFile()
+func IsMasterPasswordExist(db *files.MpVault) bool {
+	_, err := db.Read()
 
 	return err == nil
 }
 
-func CreateMasterPassword(db *files.MpDb, password string) {
+func CreateMasterPassword(db *files.MpVault, password string) {
 	if len(password) < 10 {
 		color.Red("The length of the password must be greater than or equal to 10 characters")
 
@@ -27,12 +27,12 @@ func CreateMasterPassword(db *files.MpDb, password string) {
 		color.Red("Can't store master password")
 	}
 
-	db.WriteFile([]byte(hashedPassword))
+	db.Write([]byte(hashedPassword))
 	color.Green("Successfully add master password")
 }
 
-func CheckMasterPassword(db *files.MpDb, password string) bool {
-	hash, err := db.ReadFile()
+func CheckMasterPassword(db *files.MpVault, password string) bool {
+	hash, err := db.Read()
 
 	if err != nil {
 		color.Red("Master password data is broken. Please restart Vault")
@@ -41,6 +41,6 @@ func CheckMasterPassword(db *files.MpDb, password string) bool {
 	return CheckHash(password, string(hash))
 }
 
-func ResetMasterPassword(db *files.MpDb) {
-	db.RemoveFile()
+func ResetMasterPassword(db *files.MpVault) {
+	db.Remove()
 }

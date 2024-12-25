@@ -5,7 +5,7 @@ import (
 	"password/manager/files"
 )
 
-func HandleRegisterAction(db *files.MpDb, action int8, isRunning *bool) {
+func HandleRegisterAction(db *files.MpVault, action int8, isRunning *bool) {
 	switch {
 	case action == 1:
 		register(db)
@@ -14,7 +14,7 @@ func HandleRegisterAction(db *files.MpDb, action int8, isRunning *bool) {
 	}
 }
 
-func register(db *files.MpDb) {
+func register(db *files.MpVault) {
 	masterPassword := PromptData("Enter master password: ")
 
 	cipher.CreateMasterPassword(db, masterPassword)

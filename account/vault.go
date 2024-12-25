@@ -3,7 +3,6 @@ package account
 import (
 	"encoding/json"
 	"password/manager/cipher"
-	"password/manager/files"
 	"strings"
 	"time"
 
@@ -11,6 +10,12 @@ import (
 )
 
 const VaultFileName = "data.json"
+
+type Db interface {
+	Read() ([]byte, error)
+	Write([]byte)
+	Remove()
+}
 
 type Vault struct {
 	Accounts  []Account `json:"accounts"`
@@ -20,11 +25,11 @@ type Vault struct {
 
 type VaultWithDb struct {
 	Vault
-	db files.JsonDb
+	db Db
 }
 
-func NewVault(db *files.JsonDb) *VaultWithDb {
-	data, err := db.ReadFile()
+func NewVault(db Db) *VaultWithDb {
+	data, err := db.Read()
 
 	if err != nil {
 		return &VaultWithDb{
@@ -33,7 +38,7 @@ func NewVault(db *files.JsonDb) *VaultWithDb {
 				CreatedAt: time.Now(),
 				UpdatedAt: time.Now(),
 			},
-			db: *db,
+			db: db,
 		}
 	}
 
@@ -50,13 +55,13 @@ func NewVault(db *files.JsonDb) *VaultWithDb {
 				CreatedAt: time.Now(),
 				UpdatedAt: time.Now(),
 			},
-			db: *db,
+			db: db,
 		}
 	}
 
 	return &VaultWithDb{
 		Vault: vault,
-		db:    *db,
+		db:    db,
 	}
 }
 
@@ -114,9 +119,9 @@ func (vault *VaultWithDb) RemoveByUrl(url string) {
 }
 
 func (vault *VaultWithDb) Restart() {
-	vault.db.RemoveFile()
+	vault.db.Remove()
 
-	newVault := NewVault(&vault.db)
+	newVault := NewVault(vault.db)
 
 	vault.Accounts = newVault.Accounts
 	vault.CreatedAt = newVault.CreatedAt
@@ -139,5 +144,5 @@ func (vault *VaultWithDb) save() {
 		color.Red("Can't write data")
 	}
 
-	vault.db.WriteFile(data)
+	vault.db.Write(data)
 }
