@@ -56,7 +56,7 @@ func NewVault(db *files.JsonDb) *VaultWithDb {
 
 	return &VaultWithDb{
 		Vault: vault,
-		db: *db,
+		db:    *db,
 	}
 }
 
