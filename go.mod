@@ -1,4 +1,4 @@
-module demo/password
+module password/manager
 
 go 1.23.4
 

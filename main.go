@@ -1,9 +1,9 @@
 package main
 
 import (
-	"demo/password/account"
-	"demo/password/cipher"
-	"demo/password/controller"
+	"password/manager/account"
+	"password/manager/cipher"
+	"password/manager/controller"
 )
 
 func main() {

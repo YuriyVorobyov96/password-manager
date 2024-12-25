@@ -1,7 +1,7 @@
 package cipher
 
 import (
-	"demo/password/files"
+	"password/manager/files"
 
 	"github.com/fatih/color"
 )

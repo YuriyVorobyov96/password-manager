@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"demo/password/cipher"
+	"password/manager/cipher"
 )
 
 func HandleRegisterAction(action int8, isRunning *bool) {

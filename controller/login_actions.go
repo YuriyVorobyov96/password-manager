@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"demo/password/account"
-	"demo/password/cipher"
+	"password/manager/account"
+	"password/manager/cipher"
 
 	"github.com/fatih/color"
 )

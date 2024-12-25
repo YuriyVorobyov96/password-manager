@@ -1,9 +1,9 @@
 package account
 
 import (
-	"demo/password/cipher"
-	"demo/password/files"
 	"encoding/json"
+	"password/manager/cipher"
+	"password/manager/files"
 	"strings"
 	"time"
 
