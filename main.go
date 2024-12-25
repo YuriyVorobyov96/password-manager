@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"password/manager/account"
 	"password/manager/cipher"
 	"password/manager/controller"
@@ -14,8 +13,6 @@ func main() {
 	isLogin := false
 
 	vault := account.NewVault(files.NewJsonDb(account.VaultFileName))
-
-	fmt.Println(vault)
 
 	for isRunning {
 		if cipher.IsMasterPasswordExist() {

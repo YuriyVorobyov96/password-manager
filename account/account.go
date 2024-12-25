@@ -3,7 +3,6 @@ package account
 import (
 	"crypto/rand"
 	"errors"
-	"fmt"
 	"math/big"
 	"net/url"
 	"password/manager/cipher"
@@ -43,7 +42,6 @@ func NewAccount(login, password, urlString, masterPassword string) (*Account, er
 		encryptedPassword, err = cipher.Encrypt(string(password), masterPassword)
 
 		if err != nil {
-			fmt.Println(err)
 			return nil, errors.New("INVALID_PASSWORD")
 		}
 	}
