@@ -6,12 +6,12 @@ import (
 	"github.com/fatih/color"
 )
 
-func ReadFile(name string) ([]byte, error) {
-	return os.ReadFile(name)
+func readFile(filename string) ([]byte, error) {
+	return os.ReadFile(filename)
 }
 
-func WriteFile(content []byte, name string) {
-	file, err := os.Create(name)
+func writeFile(content []byte, filename string) {
+	file, err := os.Create(filename)
 
 	if err != nil {
 		color.Red(err.Error())
@@ -30,8 +30,8 @@ func WriteFile(content []byte, name string) {
 	}
 }
 
-func RemoveFile(name string) {
-	err := os.Remove(name)
+func removeFile(filename string) {
+	err := os.Remove(filename)
 
 	if err != nil {
 		color.Red(err.Error())

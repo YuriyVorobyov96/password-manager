@@ -18,8 +18,15 @@ type Vault struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
+type VaultWithDb struct {
+	Vault
+	db files.JsonDb
+}
+
 func NewVault() *Vault {
-	data, err := files.ReadFile(vaultFileName)
+	db := files.NewJsonDb(vaultFileName)
+
+	data, err := db.ReadFile()
 
 	if err != nil {
 		return &Vault{
@@ -100,7 +107,8 @@ func (vault *Vault) RemoveByUrl(url string) {
 }
 
 func (vault *Vault) Restart() {
-	files.RemoveFile(vaultFileName)
+	db := files.NewJsonDb(vaultFileName)
+	db.RemoveFile()
 
 	newVault := NewVault()
 
@@ -124,5 +132,6 @@ func (vault *Vault) save() {
 		color.Red("Can't write data")
 	}
 
-	files.WriteFile(data, vaultFileName)
+	db := files.NewJsonDb(vaultFileName)
+	db.WriteFile(data)
 }
