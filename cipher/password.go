@@ -17,6 +17,8 @@ func IsMasterPasswordExist() bool {
 func CreateMasterPassword(password string) {
 	if len(password) < 10 {
 		color.Red("The length of the password must be greater than or equal to 10 characters")
+
+		return
 	}
 
 	hashedPassword, err := Hash(password)

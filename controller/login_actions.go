@@ -7,10 +7,10 @@ import (
 	"github.com/fatih/color"
 )
 
-func HandleLoginAction(vault *account.Vault, action int8, isLogin *bool, isRunning *bool) {
+func HandleLoginAction(vault *account.Vault, action int8, masterPassword *string, isLogin *bool, isRunning *bool) {
 	switch {
 	case action == 1:
-		login(isLogin)
+		login(isLogin, masterPassword)
 	case action == 2:
 		restartVault(vault)
 	case action == 3:
@@ -18,15 +18,17 @@ func HandleLoginAction(vault *account.Vault, action int8, isLogin *bool, isRunni
 	}
 }
 
-func login(isLogin *bool) {
-	masterPassword := PromptData("Enter master password: ")
+func login(isLogin *bool, masterPassword *string) {
+	enteredMasterPassword := PromptData("Enter master password: ")
 
-	isMatch := cipher.CheckMasterPassword(masterPassword)
+	isMatch := cipher.CheckMasterPassword(enteredMasterPassword)
 
 	if isMatch {
 		color.Green("Correct password. Login...")
 
 		*isLogin = true
+		*masterPassword = enteredMasterPassword
+
 		return
 	}
 

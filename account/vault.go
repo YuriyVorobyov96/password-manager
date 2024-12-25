@@ -1,6 +1,7 @@
 package account
 
 import (
+	"demo/password/cipher"
 	"demo/password/files"
 	"encoding/json"
 	"strings"
@@ -51,7 +52,7 @@ func (vault *Vault) AddAccount(acc Account) {
 	color.Green("Successfully add account")
 }
 
-func (vault *Vault) FindByUrl(searchString string) {
+func (vault *Vault) FindByUrl(searchString, masterPassword string) {
 	if len(vault.Accounts) == 0 {
 		color.Yellow("Can't find accounts")
 
@@ -60,7 +61,14 @@ func (vault *Vault) FindByUrl(searchString string) {
 
 	for _, value := range vault.Accounts {
 		if strings.Contains(strings.ToLower(value.Url), strings.ToLower(searchString)) {
-			color.Green("{ Login: %s, Password: %s, URL: %s }\n", value.Login, value.Password, value.Url)
+			decryptedPassword, err := cipher.Decrypt(value.Password, masterPassword)
+
+			if err != nil {
+				color.Red("Can't decrypt password")
+				panic(err)
+			}
+
+			color.Green("{ Login: %s, Password: %s, URL: %s }\n", value.Login, decryptedPassword, value.Url)
 		}
 	}
 }

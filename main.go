@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	var masterPassword string
 	isRunning := true
 	isLogin := false
 	vault := account.NewVault()
@@ -15,12 +16,12 @@ func main() {
 		if cipher.IsMasterPasswordExist() {
 			if isLogin {
 				action := controller.HandleVaultMenu()
-				controller.HandleVaultAction(vault, action, &isRunning)
+				controller.HandleVaultAction(vault, action, masterPassword, &isRunning)
 				continue
 			}
 
 			action := controller.HandleLoginMenu()
-			controller.HandleLoginAction(vault, action, &isLogin, &isRunning)
+			controller.HandleLoginAction(vault, action, &masterPassword, &isLogin, &isRunning)
 			continue
 		}
 
