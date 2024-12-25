@@ -6,16 +6,15 @@ import (
 	"github.com/fatih/color"
 )
 
-const masterPasswordFileName = "mp.dat"
+const MasterPasswordFileName = "mp.dat"
 
-func IsMasterPasswordExist() bool {
-	db := files.NewMpDb(masterPasswordFileName)
+func IsMasterPasswordExist(db *files.MpDb) bool {
 	_, err := db.ReadFile()
 
 	return err == nil
 }
 
-func CreateMasterPassword(password string) {
+func CreateMasterPassword(db *files.MpDb, password string) {
 	if len(password) < 10 {
 		color.Red("The length of the password must be greater than or equal to 10 characters")
 
@@ -28,13 +27,11 @@ func CreateMasterPassword(password string) {
 		color.Red("Can't store master password")
 	}
 
-	db := files.NewMpDb(masterPasswordFileName)
 	db.WriteFile([]byte(hashedPassword))
 	color.Green("Successfully add master password")
 }
 
-func CheckMasterPassword(password string) bool {
-	db := files.NewMpDb(masterPasswordFileName)
+func CheckMasterPassword(db *files.MpDb, password string) bool {
 	hash, err := db.ReadFile()
 
 	if err != nil {
@@ -44,7 +41,6 @@ func CheckMasterPassword(password string) bool {
 	return CheckHash(password, string(hash))
 }
 
-func ResetMasterPassword() {
-	db := files.NewMpDb(masterPasswordFileName)
+func ResetMasterPassword(db *files.MpDb) {
 	db.RemoveFile()
 }

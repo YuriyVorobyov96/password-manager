@@ -2,19 +2,20 @@ package controller
 
 import (
 	"password/manager/cipher"
+	"password/manager/files"
 )
 
-func HandleRegisterAction(action int8, isRunning *bool) {
+func HandleRegisterAction(db *files.MpDb, action int8, isRunning *bool) {
 	switch {
 	case action == 1:
-		register()
+		register(db)
 	case action == 2:
 		*isRunning = false
 	}
 }
 
-func register() {
+func register(db *files.MpDb) {
 	masterPassword := PromptData("Enter master password: ")
 
-	cipher.CreateMasterPassword(masterPassword)
+	cipher.CreateMasterPassword(db, masterPassword)
 }
