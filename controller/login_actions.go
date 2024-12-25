@@ -5,8 +5,6 @@ import (
 	"password/manager/cipher"
 	"password/manager/files"
 	"password/manager/output"
-
-	"github.com/fatih/color"
 )
 
 func HandleLoginAction(vault *account.VaultWithDb, db *files.MpVault, action int8, masterPassword *string, isLogin *bool, isRunning *bool) {
@@ -26,7 +24,7 @@ func login(db *files.MpVault, isLogin *bool, masterPassword *string) {
 	isMatch := cipher.CheckMasterPassword(db, enteredMasterPassword)
 
 	if isMatch {
-		color.Green("Correct password. Login...")
+		output.PrintSuccess("Correct password. Login...")
 
 		*isLogin = true
 		*masterPassword = enteredMasterPassword

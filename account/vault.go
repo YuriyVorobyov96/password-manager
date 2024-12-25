@@ -69,7 +69,7 @@ func NewVault(db Db) *VaultWithDb {
 func (vault *VaultWithDb) AddAccount(acc Account) {
 	vault.Accounts = append(vault.Accounts, acc)
 	vault.save()
-	color.Green("Successfully add account")
+	output.PrintSuccess("Successfully add account")
 }
 
 func (vault *VaultWithDb) FindByUrl(searchString, masterPassword string) {
@@ -88,7 +88,7 @@ func (vault *VaultWithDb) FindByUrl(searchString, masterPassword string) {
 				panic(err)
 			}
 
-			color.Green("{ Login: %s, Password: %s, URL: %s }\n", value.Login, decryptedPassword, value.Url)
+			output.PrintSuccess("{ Login: %s, Password: %s, URL: %s }\n", value.Login, decryptedPassword, value.Url)
 		}
 	}
 }
@@ -111,7 +111,7 @@ func (vault *VaultWithDb) RemoveByUrl(url string) {
 	if len(accounts) < len(vault.Accounts) {
 		vault.Accounts = accounts
 		vault.save()
-		color.Green("Successfully delete accounts")
+		output.PrintSuccess("Successfully delete accounts")
 
 		return
 	}

@@ -3,8 +3,6 @@ package cipher
 import (
 	"password/manager/files"
 	"password/manager/output"
-
-	"github.com/fatih/color"
 )
 
 const MasterPasswordFileName = "mp.dat"
@@ -29,7 +27,7 @@ func CreateMasterPassword(db *files.MpVault, password string) {
 	}
 
 	db.Write([]byte(hashedPassword))
-	color.Green("Successfully add master password")
+	output.PrintSuccess("Successfully add master password")
 }
 
 func CheckMasterPassword(db *files.MpVault, password string) bool {
